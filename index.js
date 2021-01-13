@@ -1,8 +1,4 @@
-var tasksList = [
-  { id: "1", text: "synthesize", completed: true },
-  { id: "2", text: "synthesize", completed: true },
-  { id: "3", text: "synthesize", completed: true },
-];
+var tasksList = [];
 
 function createListItem(task) {
   const div = document.createElement("div");
@@ -18,13 +14,14 @@ function createListItem(task) {
 
   const btn = document.createElement("button");
   btn.className = "destroy";
+  btn.onclick = deleteTask;
 
   div.appendChild(input);
   div.appendChild(label);
   div.appendChild(btn);
 
   const li = document.createElement("li");
-  li.setAttribute("id", task.id)
+  li.setAttribute("id", task.id);
   li.appendChild(div);
 
   return li;
@@ -41,14 +38,11 @@ function renderTask(tasks) {
 
 renderTask(tasksList);
 
-
 function getID() {
-  let newTaskId = tasksList.map(item => item.id);
+  let newTaskId = tasksList.map((item) => item.id);
   let id = Math.max.apply(null, newTaskId) + 1;
-  return String(id)
+  return String(id);
 }
-
-console.log(getID())
 
 function addNewTask() {
   let input = document.getElementById("newTask");
@@ -58,4 +52,13 @@ function addNewTask() {
     completed: false,
   });
   renderTask();
+  input.value = "";
+  console.log(tasksList)
+}
+
+function deleteTask(event) {
+  let id = event.target.parentNode.parentNode.id;
+  let newTasksList = tasksList.filter((task) => task.id !== id);
+  tasksList = newTasksList;
+  renderTask(tasksList);
 }
